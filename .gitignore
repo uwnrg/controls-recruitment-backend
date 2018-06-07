@@ -7,11 +7,20 @@ npm-debug.log
 *.dev
 .DS_Store
 
+# Web
+db.ejs
+index.ejs
+header.ejs
+nav.ejs
+lang-logo.png
+newpage.js
+test.js
+
 # Docker
 Dockerfile
 docker-compose.yml
 
-# Firebase service account key
+# Firebase
 service-account-key.json
 
 # Misc
