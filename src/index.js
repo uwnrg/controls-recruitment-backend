@@ -50,6 +50,7 @@ class Applicant {
                 Firebase setup
 **********************************************/
 var admin = require('firebase-admin');
+var hash = require('../firebase/hash.json');
 var serviceAccount = require('../firebase/service-account-key.json');
 
 admin.initializeApp({
@@ -81,6 +82,11 @@ app
 
 //Getting post parameters
 app.post('/application', function(req, res) {
+    if (req.body.hash !== hash) {
+        res.status(400).send("Incorrect password");
+        return;
+    }
+
     var user_id = req.body.id;
     applicant.setResponse(
         req.body.fullName,
@@ -95,7 +101,6 @@ app.post('/application', function(req, res) {
         req.body.repairManQuestion   
     )
     res.status(200).send("Application received");
-    res.status(400).send("Incorrect password");
     console.log("Application received: " + applicant.fullName + ' ' + applicant.email + ' ' + applicant.program + ' ' + applicant.year);
 });
 
