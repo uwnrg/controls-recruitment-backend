@@ -94,6 +94,8 @@ app.post('/application', function(req, res) {
         req.body.controlQuestion,
         req.body.repairManQuestion   
     )
+    res.status(200).send("Application received");
+    res.status(400).send("Incorrect password");
     console.log("Application received: " + applicant.fullName + ' ' + applicant.email + ' ' + applicant.program + ' ' + applicant.year);
 });
 
