@@ -72,9 +72,7 @@ app
     .use(bodyParser.json()) // support json encoded bodies
     .use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
 
-    // .set('views', path.join(__dirname, 'views'))
-    // .set('view engine', 'ejs')
-    // .get('/', (req, res) => res.render('pages/index'))
+    .get('/', (req, res) => res.send("HELLO WORLD"))
 
 //Route parameter middleware (will run before the route is called)
     .param('name', function(req, res, next, name) {
@@ -84,7 +82,7 @@ app
 //Getting post parameters
 app.post('/application', function(req, res) {
     var user_id = req.body.id;
-    applicant.setReponse(
+    applicant.setResponse(
         req.body.fullName,
         req.body.email,
         req.body.program,
@@ -96,7 +94,7 @@ app.post('/application', function(req, res) {
         req.body.controlQuestion,
         req.body.repairManQuestion   
     )
-    console.log("Application received: " + fullName + ' ' + email + ' ' + program + ' ' + year);
+    console.log("Application received: " + applicant.fullName + ' ' + applicant.email + ' ' + applicant.program + ' ' + applicant.year);
 });
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
