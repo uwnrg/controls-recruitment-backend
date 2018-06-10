@@ -1,10 +1,11 @@
 class Applicant {
     constructor() {     
     }
-    setResponse(fullName = "", email = "", yearAndProgram = "", 
+    setResponse(timestamp = "", fullName = "", email = "", yearAndProgram = "", 
         favoriteLanguage = "", hardestPartCoding = "", codingExperience = "", 
         shapeQuestion = {}, controlQuestion = {}, repairManQuestion = {}) {
         
+        this.timestamp = timestamp;
         this.fullName = fullName;
         this.email = email;
         this.yearAndProgram = yearAndProgram;

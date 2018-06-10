@@ -55,6 +55,7 @@ app.post('/application', function(req, res) {
     
     // Get data from POST request and save to applicant object
     applicant.setResponse(
+        req.body.timestamp,
         req.body.fullName,
         req.body.email,
         req.body.yearAndProgram,
