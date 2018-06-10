@@ -87,7 +87,6 @@ app.post('/application', function(req, res) {
         return;
     }
 
-    var user_id = req.body.id;
     applicant.setResponse(
         req.body.fullName,
         req.body.email,
