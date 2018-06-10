@@ -82,7 +82,7 @@ app
 
 //Getting post parameters
 app.post('/application', function(req, res) {
-    if (req.body.hash !== hash) {
+    if (req.body.hash !== hash.hash) {
         res.status(400).send("Incorrect password");
         return;
     }
