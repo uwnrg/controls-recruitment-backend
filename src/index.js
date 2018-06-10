@@ -2,49 +2,12 @@ const express = require('express');
 const path = require('path');
 var bodyParser = require('body-parser');
 var app = express();
+var Applicant = require('./applicant').Applicant;
 
 const PORT = process.env.PORT || 5000;
 // const applicantModule = require('./applicant');
 // const Applicant = applicantModule.Applicant;
 // console.log(applicantModule);
-
-/*********************************************
-                Class Defintions
-**********************************************/
-class Question {
-    constructor() {        
-    }
-    setQuestionResponse(language = "", response = "") {
-        this.Language = language;
-        this.Response = response;
-    }
-}
-
-class Applicant {
-    constructor() { 
-        var ShapeQuestion = new Question();
-        var ControlQuestion = new Question();
-        var RepairManQuestion = new Question();       
-    }
-    setResponse(fullName, email, program = "", year = "", 
-        favoriteLanguage = "", hardestPartCoding = "", codingExperience = "", 
-        shapeQuestion = {}, controlQuestion = {}, repairManQuestion = {}) {
-        
-        this.fullName = fullName;
-        this.email = email;
-        this.program = program;
-        this.year = year;
-
-        this.favoriteLanguage = favoriteLanguage;
-        this.hardestPartCoding = hardestPartCoding;
-        this.codingExperience = codingExperience;
-
-        this.shapeQuestion = shapeQuestion;
-        this.controlQuestion = controlQuestion;
-        this.repairManQuestion = repairManQuestion;
-        //this.codingQuestions = codingQuestions;     //codingQuestions doesn't save to database if blank
-    }
-}
 
 /*********************************************
                 Firebase setup
@@ -86,12 +49,11 @@ app.post('/application', function(req, res) {
         res.status(400).send("Incorrect password");
         return;
     }
-
+    
     applicant.setResponse(
         req.body.fullName,
         req.body.email,
-        req.body.program,
-        req.body.year,
+        req.body.yearAndProgram,
         req.body.favoriteLanguage,
         req.body.hardestPartCoding,
         req.body.codingExperience,
@@ -99,8 +61,12 @@ app.post('/application', function(req, res) {
         req.body.controlQuestion,
         req.body.repairManQuestion   
     )
+
+    //Create a new applicant in the database
+    //applicant.fullName = "new applicant";
+    applicantRef.child(applicant.fullName).set(applicant);
     res.status(200).send("Application received");
-    console.log("Application received: " + applicant.fullName + ' ' + applicant.email + ' ' + applicant.program + ' ' + applicant.year);
+    console.log("Application received: " + applicant.fullName + ' ' + applicant.email + ' ' + applicant.yearAndProgram);
 });
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
@@ -109,7 +75,5 @@ app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 /*********************************************
                Write to database
 **********************************************/
-//Create a new applicant in the database
-applicant.fullName = "new applicant";
-applicantRef.child(applicant.fullName).set(applicant);
+
 
