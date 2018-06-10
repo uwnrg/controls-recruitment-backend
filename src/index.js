@@ -5,9 +5,6 @@ var app = express();
 var Applicant = require('./applicant').Applicant;
 
 const PORT = process.env.PORT || 5000;
-// const applicantModule = require('./applicant');
-// const Applicant = applicantModule.Applicant;
-// console.log(applicantModule);
 
 /*********************************************
                 Firebase setup
@@ -21,10 +18,11 @@ admin.initializeApp({
   databaseURL: 'https://nrg-controls-recruitment.firebaseio.com'
 });
 
-// Make reference to database
+// References to database
 var db = admin.database();
 var ref = db.ref();
 
+// Set applicant reference
 var applicantRef = ref.child("applicants");
 var applicant = new Applicant();
 
@@ -36,20 +34,26 @@ app
     .use(bodyParser.json()) // support json encoded bodies
     .use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
 
+    // Test get function
     .get('/', (req, res) => res.send("HELLO WORLD"))
 
-//Route parameter middleware (will run before the route is called)
+    // Route parameter middleware (will run before the route is called)
     .param('name', function(req, res, next, name) {
-        //next(); //continue to next function
+        //next(); // Continue to next function
     })
+
+function validate(app) {
+    return !!app.fullName && !!app.email && !!app.yearAndProgram;
+}
 
 //Getting post parameters
 app.post('/application', function(req, res) {
     if (req.body.hash !== hash.hash) {
-        res.status(400).send("Incorrect password");
+        res.status(400).send("xd");
         return;
     }
     
+    // Get data from POST request and save to applicant object
     applicant.setResponse(
         req.body.fullName,
         req.body.email,
@@ -62,18 +66,10 @@ app.post('/application', function(req, res) {
         req.body.repairManQuestion   
     )
 
-    //Create a new applicant in the database
-    //applicant.fullName = "new applicant";
-    applicantRef.child(applicant.fullName).set(applicant);
+    // Create a new applicant in the database
+    applicantRef.child(applicant.fullName + " - " + applicant.email.replace(".", "dot")).set(applicant);
     res.status(200).send("Application received");
     console.log("Application received: " + applicant.fullName + ' ' + applicant.email + ' ' + applicant.yearAndProgram);
 });
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
-
-
-/*********************************************
-               Write to database
-**********************************************/
-
-

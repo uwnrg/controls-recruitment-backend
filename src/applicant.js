@@ -1,7 +1,7 @@
 class Applicant {
     constructor() {     
     }
-    setResponse(fullName, email, yearAndProgram = "", 
+    setResponse(fullName = "", email = "", yearAndProgram = "", 
         favoriteLanguage = "", hardestPartCoding = "", codingExperience = "", 
         shapeQuestion = {}, controlQuestion = {}, repairManQuestion = {}) {
         
